@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'nltk',
     'networkx',
-    'numpy'
+    'numpy',
+    'heapq',
+    
 ]
 
 MIDDLEWARE = [

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="jumbotron text-center" style="height:100%; align-content: center; background-color: rgb(250, 249, 246); width: 150%;" >
+<div class="jumbotron text-center" style="min-height:1000px; align-content: center; background-color: rgb(250, 249, 246); width: 150%;" >
     <div class="form-group">
         <form class="formss"  method="post">
         {% csrf_token %}
@@ -24,7 +24,9 @@
         </form> 
       
   </div>  
-     
-  <textarea id='outtext' name='outtext' rows="15" cols="80">{{output_txt}}</textarea>  
+   
+<div class="col-lg-6" ><textarea id='outtext' name='outtext' rows="15" cols="50" aria-colspan="10px">{{output_txt1}}</textarea></div> 
+<div class="col-lg-6"><textarea id='outtext2' name='outtext2' rows="15" cols="50">{{output_txt2}}</textarea></div> 
+    
 </div>
 {% endblock %}
