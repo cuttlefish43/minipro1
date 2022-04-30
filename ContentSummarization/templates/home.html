@@ -1,5 +1,22 @@
 {% extends 'base.html' %}
 {% block content %}
+
+<style>
+  .output1-div, .output2-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .copy-icon {
+    width: 10rem;
+
+    background-color: black;
+  }
+
+</style>
+
 <div class="jumbotron text-center" style="min-height:1000px; align-content: center; background-color: rgb(250, 249, 246); width: 150%;" >
     <div class="form-group">
         <form class="formss"  method="post">
@@ -25,8 +42,39 @@
       
   </div>  
    
-<div class="col-lg-6" ><textarea id='outtext' name='outtext' rows="15" cols="50" aria-colspan="10px">{{output_txt1}}</textarea></div> 
-<div class="col-lg-6"><textarea id='outtext2' name='outtext2' rows="15" cols="50">{{output_txt2}}</textarea></div> 
+<div class="col-lg-6 output1-div">
+  <textarea id='outtext' name='outtext' rows="15" cols="50" aria-colspan="10px">{{output_txt1}}</textarea>
+  <button type="button" class="copy-icon btn btn-primary" id="copy-icon-1">Copy</button>
+</div> 
+<div class="col-lg-6 output2-div">
+  <textarea id='outtext2' name='outtext2' rows="15" cols="50">{{output_txt2}}</textarea>
+  <button type="button" class="copy-icon  btn btn-primary"" id="copy-icon-2">Copy</button>
+</div> 
     
 </div>
+
+
+<script>
+  copy_icon_1 = document.getElementById("copy-icon-1");
+  outtext = document.getElementById("outtext");
+  copy_icon_1.addEventListener("click", function (event) {
+      outtext.select();
+      // outtext.setSelectionRange(0, 99999);
+      
+      console.log(outtext.value);
+
+      navigator.clipboard.writeText(outtext.value);
+  });
+
+  copy_icon_2 = document.getElementById("copy-icon-2");
+  outtext2 = document.getElementById("outtext2");
+  copy_icon_2.addEventListener("click", function (event) {
+      outtext2.select();
+      // #outtext2.setSelectionRange(0, 99999);
+      
+      console.log(outtext2.value);
+
+      navigator.clipboard.writeText(outtext2.value);
+  });
+</script>
 {% endblock %}

@@ -195,21 +195,27 @@ class B:
 ############################################################
 def home(request):
     if request.method == 'POST':
+        print(f"into post method")
         #text_input=request.inptext
         #do processing on this txt
         inp_text=request.POST['inptext']
+        # print(f"inp_text {inp_text}")
         print(len(inp_text))
         if len(inp_text) <= 200:
+            print("too short")
             input_txt=""
             output_txt="Input too short"
             return render(request,'home.html',{'input_txt':input_txt,'output_txt':output_txt})
         
         obj1=A(inp_text)
         text_output1,sc=obj1.summarize(120,0.3)
+        
+        print(f"text_output1 {text_output1}")
 
         #summarized_output,score=summarize(inp_text,120,0.3)
         obj2=B(inp_text)
         text_output2,sc=obj2.summarize(300,10,120,0.3)
+        print(f"text_output2 {text_output1}")
         #print(text_output2)
         # print(summarized_output)
         return render(request,'home.html',{'input_txt':inp_text,'output_txt1':text_output1, 'output_txt2':text_output2})
