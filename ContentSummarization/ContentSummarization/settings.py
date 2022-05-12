@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+SILENCED_SYSTEM_CHECKS=["models.W001"]
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,10 +37,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'summarize',
     'nltk',
     'networkx',
     'numpy',
     'heapq',
+    'pickle',
+    'torch',
+    'transformers',
+    'sentencepiece',
     
 ]
 

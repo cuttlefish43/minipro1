@@ -42,15 +42,18 @@
       
   </div>  
    
-<div class="col-lg-6 output1-div">
-  <textarea id='outtext' name='outtext' rows="15" cols="50" aria-colspan="10px">{{output_txt1}}</textarea>
+<div class="col-lg-4 output1-div">
+  <textarea id='outtext' name='outtext' rows="15" cols="40" aria-colspan="10px">{{output_txt1}}</textarea>
   <button type="button" class="copy-icon btn btn-primary" id="copy-icon-1">Copy</button>
 </div> 
-<div class="col-lg-6 output2-div">
-  <textarea id='outtext2' name='outtext2' rows="15" cols="50">{{output_txt2}}</textarea>
+<div class="col-lg-4 output2-div">
+  <textarea id='outtext2' name='outtext2' rows="15" cols="40">{{output_txt2}}</textarea>
   <button type="button" class="copy-icon  btn btn-primary"" id="copy-icon-2">Copy</button>
 </div> 
-    
+<div class="col-lg-4 output3-div">
+  <textarea id='outtext3' name='outtext3' rows="15" cols="40">{{output_txt3}}</textarea>
+  <button type="button" class="copy-icon  btn btn-primary"" id="copy-icon-3">Copy</button>
+</div> 
 </div>
 
 
@@ -76,5 +79,20 @@
 
       navigator.clipboard.writeText(outtext2.value);
   });
+  copy_icon_3 = document.getElementById("copy-icon-3");
+  outtext3 = document.getElementById("outtext3");
+  copy_icon_3.addEventListener("click", function (event) {
+      outtext3.select();
+      // #outtext2.setSelectionRange(0, 99999);
+      
+      console.log(outtext3.value);
+
+      navigator.clipboard.writeText(outtext3.value);
+  });
 </script>
 {% endblock %}
+{% if output_txt3 %}
+  {% block footercontent %}
+  <div class="text-center"><h2> Sentiment Analysis Score :  {{sentiment_txt}} </h2></div>
+  {% endblock %}
+{% endif %}

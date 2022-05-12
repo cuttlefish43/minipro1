@@ -191,8 +191,31 @@ class B:
 
     #print(result)
 ############################################################
-    
+#from transformers import PegasusForConditionalGeneration, PegasusTokenizer
+from .apps import SummarizeConfig
+#import pickle
+class C:
+    def __init__(self,text):
+        self.text=text
+    def summarize(self):
+        txt=self.text
+        ans=""
+        
+        tokenizerModel=SummarizeConfig.tokenizer_model
+        loadedModel=SummarizeConfig.loaded_model
+        sentimentModel=SummarizeConfig.sentiment_model
+        tokens = tokenizerModel(txt, truncation=True, padding="longest", return_tensors="pt")
+        summary = loadedModel.generate(**tokens)
+        ans=tokenizerModel.decode(summary[0])
+        sen_ans=0.0
+        sentiment_analysis_result=sentimentModel(ans)[0]
+        if sentiment_analysis_result['label'] == "NEGATIVE":
+            sen_ans=(-1)*sentiment_analysis_result['score']
+        else:
+            sen_ans=sentiment_analysis_result['score']
+        return ans,sen_ans
 ############################################################
+###########################################################
 def home(request):
     if request.method == 'POST':
         print(f"into post method")
@@ -215,10 +238,14 @@ def home(request):
         #summarized_output,score=summarize(inp_text,120,0.3)
         obj2=B(inp_text)
         text_output2,sc=obj2.summarize(300,10,120,0.3)
-        print(f"text_output2 {text_output1}")
+        print(f"text_output2 {text_output2}")
+        obj3=C(inp_text)
+        text_output3,sentiment_score=obj3.summarize()
+        print(f"text_output3 {text_output3} and score of sentiment {sentiment_score}")
         #print(text_output2)
         # print(summarized_output)
-        return render(request,'home.html',{'input_txt':inp_text,'output_txt1':text_output1, 'output_txt2':text_output2})
+
+        return render(request,'home.html',{'input_txt':inp_text,'output_txt1':text_output1, 'output_txt2':text_output2,'output_txt3':text_output3,'sentiment_txt':sentiment_score})
 
     else:
         input_txt=""
