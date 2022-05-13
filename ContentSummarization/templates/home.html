@@ -35,25 +35,31 @@
           </div> -->
           <div class="form-group">
             
-            <textarea type="text class="form-control" id='inptext' name='inptext' rows="15" cols="80" placeholder="sumbit your text here">{{input_txt}}</textarea>
+            <textarea type="text" class="form-control" id='inptext' name='inptext' rows="15" cols="80" placeholder="sumbit your text here">{{input_txt}}</textarea>
           </div>
           <button type="submit" class="btn btn-success">Submit</button>
         </form> 
       
   </div>  
-   
+<!-- <form name="f1" method="post" action="/vote" ><input type="hidden" name="use_id" value="{{use_id}}">
+  <input type="hidden" name="AlgoNumber" value="1"></form>
+<form name="f2" method="post" action="/vote" ><input type="hidden" name="use_id" value="{{use_id}}">
+  <input type="hidden" name="AlgoNumber" value="2"></form>
+<form name="f3" method="post" action="/vote" ><input type="hidden" name="use_id" value="{{use_id}}">
+  <input type="hidden" name="AlgoNumber" value="3"> </form>
+ -->
 <div class="col-lg-4 output1-div">
   <textarea id='outtext' name='outtext' rows="15" cols="40" aria-colspan="10px">{{output_txt1}}</textarea>
   <button type="button" class="copy-icon btn btn-primary" id="copy-icon-1">Copy</button>
 </div> 
 <div class="col-lg-4 output2-div">
-  <textarea id='outtext2' name='outtext2' rows="15" cols="40">{{output_txt2}}</textarea>
-  <button type="button" class="copy-icon  btn btn-primary"" id="copy-icon-2">Copy</button>
+  <textarea id='outtext2' name='outtext2' rows="15" cols="40" aria-colspan="10px">{{output_txt2}}</textarea>
+  <button type="button" class="copy-icon  btn btn-primary" id="copy-icon-2">Copy</button>
 </div> 
 <div class="col-lg-4 output3-div">
-  <textarea id='outtext3' name='outtext3' rows="15" cols="40">{{output_txt3}}</textarea>
-  <button type="button" class="copy-icon  btn btn-primary"" id="copy-icon-3">Copy</button>
-</div> 
+  <textarea id='outtext3' name='outtext3' rows="15" cols="40" aria-colspan="10px">{{output_txt3}}</textarea>
+  <button type="submit" class="copy-icon  btn btn-primary" id="copy-icon-3">Copy</button>
+</div>
 </div>
 
 
@@ -65,8 +71,22 @@
       // outtext.setSelectionRange(0, 99999);
       
       console.log(outtext.value);
-
+      
       navigator.clipboard.writeText(outtext.value);
+      $.ajax(
+        {
+          url:"/vote",
+          type:"POST",
+          data:{
+            vote_id:"1",
+            session_id:"{{use_id}}",
+          },
+
+          success: function(){
+
+          }
+        }
+      ) 
   });
 
   copy_icon_2 = document.getElementById("copy-icon-2");
@@ -78,6 +98,20 @@
       console.log(outtext2.value);
 
       navigator.clipboard.writeText(outtext2.value);
+      $.ajax(
+        {
+          url:"/vote",
+          type:"POST",
+          data:{
+            vote_id:"2",
+            session_id:"{{use_id}}",
+          },
+
+          success: function(){
+            
+          }
+        }
+      ) 
   });
   copy_icon_3 = document.getElementById("copy-icon-3");
   outtext3 = document.getElementById("outtext3");
@@ -88,7 +122,55 @@
       console.log(outtext3.value);
 
       navigator.clipboard.writeText(outtext3.value);
+      $.ajax(
+        {
+          url:"/vote",
+          type:"POST",
+          data:{
+            vote_id:"3",
+            session_id:"{{use_id}}",
+          },
+
+          success: function(){
+            
+          }
+        }
+      ) 
   });
+  
+  downloadbtn= document.getElementById("downloadBtn");
+  /* 
+  downloadbtn.addEventListener("click", function (event) {
+      
+      // #outtext2.setSelectionRange(0, 99999);
+      $.ajax(
+        {
+          url:"/datasetDownload",
+          type:"GET",
+          data:{
+          },
+          xhrFields:{
+            responseType: 'blob'
+          },
+          success: function(result){
+            console.log(result)
+            var a=document.createElement('a');
+            var url=window.URL.createObjectURL(result);
+            a.href=url;
+            a.download='export.csv';
+            document.body.append(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+            console.log("this ran")
+          },
+          error: function(){
+            console.log('download error!')
+          }
+        }
+      ) 
+  }); */
+  
 </script>
 {% endblock %}
 {% if output_txt3 %}

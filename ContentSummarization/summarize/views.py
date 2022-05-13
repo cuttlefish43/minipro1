@@ -1,9 +1,11 @@
 # Create your views here.
+from urllib import response
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User,auth
 from django.contrib import messages
+from .models import SummarizationDataset
 import re
 import nltk
 import string
@@ -244,13 +246,69 @@ def home(request):
         print(f"text_output3 {text_output3} and score of sentiment {sentiment_score}")
         #print(text_output2)
         # print(summarized_output)
-
-        return render(request,'home.html',{'input_txt':inp_text,'output_txt1':text_output1, 'output_txt2':text_output2,'output_txt3':text_output3,'sentiment_txt':sentiment_score})
+        dataRecord=SummarizationDataset.objects.create(inpText=inp_text,inpTextLength=len(inp_text),algo1ExtTxt=text_output1,algo1ExtLength=len(text_output1),algo2ExtTxt=text_output2,algo2ExtLength=len(text_output2),algo3AbsTxt=text_output3,algo3AbsLength=len(text_output3),UserChoice=0,SentimentScore=sentiment_score)
+        return render(request,'home.html',{'input_txt':inp_text,'output_txt1':text_output1, 'output_txt2':text_output2,'output_txt3':text_output3,'sentiment_txt':sentiment_score,'use_id':dataRecord.id})
 
     else:
         input_txt=""
-        output_txt="No input to generate output"
-        return render(request,'home.html',{'input_txt':input_txt,'output_txt':output_txt})
+        output_txt=""
+        return render(request,'home.html',{'input_txt':input_txt})
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponseRedirect
+from django.http import JsonResponse
+@csrf_exempt
+def vote(request):
+    print("voting")
+    if request.method == 'POST':
+        inp_id=int(request.POST.get('session_id',False))
+        inp_vote=int(request.POST.get('vote_id',False))
+        print(inp_id)
+        print(inp_vote)
+        dataRecord=SummarizationDataset.objects.get(id=inp_id)
+        dataRecord.UserChoice=inp_vote
+        dataRecord.save(update_fields=['UserChoice'])
+        print("voted")
+        return JsonResponse({'vote_id':inp_vote})
+        #return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    else:
+        #return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        return JsonResponse({'vote_id':0})
 
+import csv
+def download_csv(queryset):
+    model = queryset.model
+    model_fields = model._meta.fields + model._meta.many_to_many
+    field_names = [field.name for field in model_fields]
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="export.csv"'
+
+    # the csv writer
+    writer = csv.writer(response, delimiter=";")
+    # Write a first row with header information
+    writer.writerow(field_names)
+    # Write data rows
+    for row in queryset:
+        values = []
+        for field in field_names:
+            value = getattr(row, field)
+            if callable(value):
+                try:
+                    value = value() or ''
+                except:
+                    value = 'Error retrieving value'
+            if value is None:
+                value = ''
+            values.append(value)
+        writer.writerow(values)
+    return response
+
+def datasetDownload(request):
+    print("downloader called")
+    data = download_csv(SummarizationDataset.objects.all())
+    response = data
+    return response
+
+    
 
     

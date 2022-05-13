@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.views.decorators.csrf',
     'summarize',
     'nltk',
     'networkx',
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
     'torch',
     'transformers',
     'sentencepiece',
+    'csv',
     
 ]
 
