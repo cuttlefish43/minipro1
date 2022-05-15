@@ -280,7 +280,7 @@ def download_csv(queryset):
     model_fields = model._meta.fields + model._meta.many_to_many
     field_names = [field.name for field in model_fields]
 
-    response = HttpResponse(content_type='application/pdf')
+    response = HttpResponse(content_type='application')
     response['Content-Disposition'] = 'attachment; filename="export.csv"'
 
     # the csv writer
